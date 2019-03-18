@@ -54,8 +54,8 @@ data_root = 'data/bdd100k/'
 img_norm_cfg = dict(
     mean=[71.064, 74.613, 73.936], std=[10.619, 11.035, 10.864], to_rgb=True)
 data = dict(
-    imgs_per_gpu=4,
-    workers_per_gpu=4,
+    imgs_per_gpu=8,
+    workers_per_gpu=2,
     train=dict(
         type=dataset_type,
         ann_file=data_root + 'labels/bdd100k_labels_images_det_coco_train.json',
@@ -91,15 +91,15 @@ data = dict(
         with_label=False,
         test_mode=True))
 # optimizer
-optimizer = dict(type='SGD', lr=0.005, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(
     policy='step',
     warmup='linear',
-    warmup_iters=1000,
+    warmup_iters=500,
     warmup_ratio=1.0 / 3,
-    step=[16, 22])
+    step=[8, 11])
 checkpoint_config = dict(interval=1)
 # yapf:disable
 log_config = dict(
@@ -110,7 +110,7 @@ log_config = dict(
     ])
 # yapf:enable
 # runtime settings
-total_epochs = 24
+total_epochs = 12
 device_ids = range(8)
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
